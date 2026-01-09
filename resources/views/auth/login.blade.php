@@ -1,47 +1,107 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="en">
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ramarama</title>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem;">
+
+    <div
+        style="position: absolute; width: 500px; height: 500px; background: var(--primary); filter: blur(200px); opacity: 0.15; top: -100px; right: -100px; border-radius: 50%;">
+    </div>
+    <div
+        style="position: absolute; width: 400px; height: 400px; background: var(--accent); filter: blur(200px); opacity: 0.1; bottom: -100px; left: -100px; border-radius: 50%;">
+    </div>
+
+    <div class="glass"
+        style="max-width: 450px; width: 100%; padding: 3rem; border-radius: 24px; position: relative; z-index: 10;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <a href="{{ url('/') }}"
+                style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none;">
+                RAMARAMA
+            </a>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;">Welcome back</p>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <!-- Session Status -->
+        @if (session('status'))
+            <div
+                style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; color: #22c55e;">
+                {{ session('status') }}
+            </div>
+        @endif
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <!-- Email -->
+            <div style="margin-bottom: 1.5rem;">
+                <label for="email"
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem;">Email</label>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
+                    autocomplete="username" style="width: 100%;">
+                @error('email')
+                    <span
+                        style="color: #ef4444; font-size: 0.85rem; margin-top: 0.5rem; display: block;">{{ $message }}</span>
+                @enderror
+            </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+            <!-- Password -->
+            <div style="margin-bottom: 1.5rem;">
+                <label for="password"
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem;">Password</label>
+                <input id="password" type="password" name="password" required autocomplete="current-password"
+                    style="width: 100%;">
+                @error('password')
+                    <span
+                        style="color: #ef4444; font-size: 0.85rem; margin-top: 0.5rem; display: block;">{{ $message }}</span>
+                @enderror
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+            <!-- Remember Me -->
+            <div style="margin-bottom: 2rem;">
+                <label style="display: flex; align-items: center; cursor: pointer;">
+                    <input type="checkbox" name="remember" style="width: auto; margin-right: 0.5rem;">
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">Remember me</span>
+                </label>
+            </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <!-- Submit Button -->
+            <button type="submit" class="btn-primary"
+                style="width: 100%; padding: 1rem; font-size: 1rem; margin-bottom: 1.5rem;">
+                <i class="fa-solid fa-right-to-bracket"></i> Log In
+            </button>
+
+            <!-- Links -->
+            <div style="text-align: center;">
+                @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}"
+                        style="color: var(--text-muted); font-size: 0.9rem; text-decoration: none; transition: var(--transition);"
+                        onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">
+                        Forgot your password?
+                    </a>
+                @endif
+
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border);">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Don't have an account?</span>
+                    <a href="{{ route('register') }}"
+                        style="color: var(--primary); font-weight: 600; text-decoration: none; margin-left: 0.5rem; transition: var(--transition);"
+                        onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--primary)'">
+                        Sign up
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

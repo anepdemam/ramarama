@@ -1,113 +1,74 @@
 <x-ramarama-layout>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <form method="GET" action="{{ route('products.index') }}" class="search-form">
-        <h1>Our Products</h1>
-
-        <div class="search-section">
-            <input type="text" id="search" name="search" placeholder="Search products..."
-                value="{{ request('search') }}" autocomplete="off">
-            <button type="submit">Search</button>
-
-            <button type="button" id="filter-icon" class="filter-icon">
-                <i class="fas fa-filter"></i>
-            </button>
-
-            <div id="filter-dropdown" class="filter-dropdown" style="display: none;">
-                <select name="category">
-                    <option value="">All Categories</option>
-                    @foreach ($categories as $cat)
-                        <option value="{{ $cat->category }}" {{ request('category') == $cat->category ? 'selected' : '' }}>
-                            {{ $cat->category }}
-                        </option>
-                    @endforeach
-                </select>
-
-                <select name="sort">
-                    <option value="">Sort By</option>
-                    <option value="low_to_high" {{ request('sort') == 'low_to_high' ? 'selected' : '' }}>Price: Low to
-                        High</option>
-                    <option value="high_to_low" {{ request('sort') == 'high_to_low' ? 'selected' : '' }}>Price: High to
-                        Low</option>
-                </select>
-
-                <button type="submit">Apply Filters</button>
-            </div>
+    <section style="padding-top: 8rem;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h1 style="font-size: 3rem; margin-bottom: 1rem;">Collections</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Discover your next statement piece</p>
         </div>
-    </form>
 
-    <ul id="autocomplete-results" style="display: none;"></ul>
+        <!-- Search & Filters -->
+        <div style="max-width: 1200px; margin: 0 auto 3rem; padding: 0 2rem;">
+            <form method="GET" action="{{ route('products.index') }}"
+                style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                <input type="text" name="search" placeholder="Search products..." value="{{ request('search') }}"
+                    style="max-width: 400px; flex: 1;">
 
-    <section class="products" id="products">
-        <div class="product-grid">
-            @forelse ($products as $product)
-                <div class="product">
-                    @php
-                        $images = $product->images;
-                        $firstImage = !empty($images[0]) ? asset($images[0]) : asset('images/placeholder.jpg');
-                        $secondImage = !empty($images[1]) ? asset($images[1]) : $firstImage;
-                    @endphp
+                <select name="category" style="max-width: 200px;">
+                    <option value="">All Categories</option>
+                    <option value="Tops" {{ request('category') == 'Tops' ? 'selected' : '' }}>Tops</option>
+                    <option value="Hoodies" {{ request('category') == 'Hoodies' ? 'selected' : '' }}>Hoodies</option>
+                    <option value="Bottoms" {{ request('category') == 'Bottoms' ? 'selected' : '' }}>Bottoms</option>
+                    <option value="Outerwear" {{ request('category') == 'Outerwear' ? 'selected' : '' }}>Outerwear
+                    </option>
+                </select>
 
-                    <div class="product-image-container">
-                        <img src="{{ $firstImage }}" alt="{{ $product->name }}" class="product-image">
-                        <img src="{{ $secondImage }}" alt="{{ $product->name }}" class="hover-image">
-                    </div>
+                <select name="sort" style="max-width: 200px;">
+                    <option value="">Sort By</option>
+                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to High
+                    </option>
+                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to Low
+                    </option>
+                </select>
 
-                    <div class="product-info">
-                        <h3>{{ $product->name }}</h3>
-                        <p class="product-description">{{ Str::limit($product->description, 100) }}</p>
-                        <p class="product-price">RM{{ number_format($product->price, 2) }}</p>
-                        <a href="{{ route('products.show', $product) }}" class="btn">View Details</a>
-                    </div>
+                <button type="submit" class="btn-primary" style="padding: 0.8rem 2rem;">
+                    <i class="fa-solid fa-search"></i> Search
+                </button>
+            </form>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" style="padding: 0 2rem;">
+            @forelse($products as $product)
+                <div class="product-card">
+                    <a href="{{ route('products.show', $product) }}" style="text-decoration: none; color: inherit;">
+                        <div class="product-image-wrap">
+                            @if($product->images && count($product->images) > 0)
+                                <img src="{{ asset($product->images[0]) }}" alt="{{ $product->name }}">
+                            @else
+                                <div
+                                    style="width: 100%; height: 100%; background: var(--surface); display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-image" style="font-size: 3rem; color: var(--text-muted);"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="product-info">
+                            <span
+                                style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">{{ $product->category }}</span>
+                            <h3>{{ $product->name }}</h3>
+                            <span class="price">RM{{ number_format($product->price, 2) }}</span>
+                            <a href="{{ route('products.show', $product) }}" class="btn-primary"
+                                style="width: 100%; text-align: center; font-size: 0.9rem; padding: 0.7rem;">
+                                View Details
+                            </a>
+                        </div>
+                    </a>
                 </div>
             @empty
-                <h3>No products found matching your search or filters!</h3>
+                <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 0;">
+                    <i class="fa-solid fa-box-open"
+                        style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+                    <p style="color: var(--text-muted); font-size: 1.2rem;">No products found</p>
+                </div>
             @endforelse
         </div>
     </section>
-
-    <script>
-        const searchInput = document.getElementById('search');
-        const resultsContainer = document.getElementById('autocomplete-results');
-        const filterIcon = document.getElementById('filter-icon');
-        const filterDropdown = document.getElementById('filter-dropdown');
-
-        searchInput.addEventListener('keyup', function () {
-            const query = searchInput.value.trim();
-            if (query.length > 0) {
-                // In Laravel, we can implement a dedicated route for this
-                fetch('{{ route('products.suggestions') }}?query=' + query)
-                    .then(response => response.json())
-                    .then(data => {
-                        resultsContainer.style.display = 'block';
-                        resultsContainer.innerHTML = '';
-                        if (data.length > 0) {
-                            data.forEach(item => {
-                                const listItem = document.createElement('li');
-                                listItem.textContent = item;
-                                resultsContainer.appendChild(listItem);
-                            });
-                        } else {
-                            resultsContainer.innerHTML = '<li>No results found</li>';
-                        }
-                    })
-                    .catch(error => console.error('Error fetching suggestions:', error));
-            } else {
-                resultsContainer.style.display = 'none';
-            }
-        });
-
-        filterIcon.addEventListener('click', function () {
-            filterDropdown.style.display = (filterDropdown.style.display === 'block') ? 'none' : 'block';
-        });
-
-        document.addEventListener('click', function (event) {
-            if (!filterDropdown.contains(event.target) && event.target !== filterIcon) {
-                filterDropdown.style.display = 'none';
-            }
-            if (!resultsContainer.contains(event.target) && event.target !== searchInput) {
-                resultsContainer.style.display = 'none';
-            }
-        });
-    </script>
 </x-ramarama-layout>
