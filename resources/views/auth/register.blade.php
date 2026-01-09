@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.scss', 'resources/js/app.js'])
 </head>
 <body style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem;">
     
