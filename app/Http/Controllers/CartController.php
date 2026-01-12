@@ -42,7 +42,37 @@ class CartController extends Controller
 
         Session::put('cart', $cart);
 
+        if ($request->wantsJson()) {
+            $totalQty = 0;
+            foreach ($cart as $item) {
+                $totalQty += $item['quantity'];
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product added to cart!',
+                'cartCount' => $totalQty
+            ]);
+        }
+
         return redirect()->route('cart.index')->with('success', 'Product added to cart!');
+    }
+
+    public function update(Request $request, $cartId)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1'
+        ]);
+
+        $cart = Session::get('cart', []);
+
+        if (isset($cart[$cartId])) {
+            $cart[$cartId]['quantity'] = (int) $request->input('quantity');
+            Session::put('cart', $cart);
+            return redirect()->route('cart.index')->with('success', 'Cart updated!');
+        }
+
+        return redirect()->route('cart.index')->with('error', 'Item not found in cart.');
     }
 
     public function remove($cartId)

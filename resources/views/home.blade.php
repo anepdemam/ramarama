@@ -1,10 +1,19 @@
 <x-ramarama-layout>
     <section class="hero">
         <div class="hero-bg-glow"></div>
-        <div class="hero-content animate-up">
-            <h1>A World Without<br>Insecurities</h1>
-            <p>Premium streetwear designed to empower your confidence. Express yourself without limits.</p>
-            <a href="{{ route('products.index') }}" class="btn-primary">Explore Collections</a>
+        <div class="hero-container">
+            <div class="hero-content animate-up">
+                <h1>A World Without<br>Insecurities</h1>
+                <p>Premium streetwear designed to empower your confidence. Express yourself without limits.</p>
+                <a href="{{ route('products.index') }}" class="btn-primary">Explore Collections</a>
+            </div>
+
+            <div class="hero-image animate-up" style="animation-delay: 0.2s;">
+                <div class="placeholder-box">
+                    <i class="fa-solid fa-image"></i>
+                    <span>Hero Image Placeholder</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -41,7 +50,7 @@
             @endforeach
         </div>
 
-        @if($products->count() === 0)
+        @if($products->isEmpty())
             <div style="text-align: center; padding: 4rem 0;">
                 <i class="fa-solid fa-box-open" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
                 <p style="color: var(--text-muted); font-size: 1.2rem;">New drops coming soon...</p>

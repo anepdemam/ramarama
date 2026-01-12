@@ -52,6 +52,7 @@ class CheckoutController extends Controller
                 'user_id' => Auth::id(),
                 'status' => 'Pending',
                 'total' => $total,
+                'payment_method' => 'FPX Online Banking', // Dummy value for now
                 'shipping_name' => $request->shipping_name,
                 'shipping_phone' => $request->shipping_phone,
                 'shipping_address' => $request->shipping_address,

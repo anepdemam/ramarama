@@ -17,6 +17,8 @@
 </head>
 
 <body>
+
+
     <header class="navbar" id="mainNavbar">
         <div class="nav-container">
             <a href="{{ url('/') }}" class="logo">RAMARAMA</a>

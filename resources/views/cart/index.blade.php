@@ -21,7 +21,16 @@
                             <div>
                                 <h3 style="margin-bottom: 0.5rem;">{{ $item['name'] }}</h3>
                                 <p style="color: var(--text-muted); font-size: 0.9rem;">Size: {{ $item['size'] }}</p>
-                                <p style="color: var(--text-muted); font-size: 0.9rem;">Quantity: {{ $item['quantity'] }}</p>
+                                <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="color: var(--text-muted); font-size: 0.9rem;">Quantity:</span>
+                                    <form action="{{ route('cart.update', $id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1"
+                                            onchange="this.form.submit()"
+                                            style="width: 60px; padding: 0.2rem 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 6px; color: white;">
+                                    </form>
+                                </div>
                             </div>
 
                             <div style="text-align: right;">

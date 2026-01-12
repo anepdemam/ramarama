@@ -1,0 +1,31 @@
+// Footer
+footer {
+    padding: 6rem 2rem;
+    background: $bg-secondary;
+    border-top: 1px solid $glass-border;
+    text-align: center;
+}
+
+.footer-logo {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+
+    a {
+        color: $text-muted;
+        font-size: 1.5rem;
+        transition: $transition;
+
+        &:hover {
+            color: $primary;
+            transform: translateY(-3px);
+        }
+    }
+}

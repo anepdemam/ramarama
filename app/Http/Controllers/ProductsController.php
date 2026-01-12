@@ -11,13 +11,3 @@ class ProductsController extends Controller
         return view('products');
     }
 }
-<?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-
-class ProductsController extends Controller
-{
-    //
-}

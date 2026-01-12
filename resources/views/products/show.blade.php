@@ -2,7 +2,8 @@
     <section style="padding-top: 8rem;">
         <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
             <a href="{{ route('products.index') }}"
-                style="color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem;">
+                style="color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; transition: var(--transition);"
+                onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">
                 <i class="fa-solid fa-arrow-left"></i> Back to Collections
             </a>
 
@@ -10,24 +11,32 @@
                 <!-- Product Images -->
                 <div>
                     @if($product->images && count($product->images) > 0)
-                        <div style="aspect-ratio: 1/1; border-radius: 20px; overflow: hidden; margin-bottom: 1rem;">
+                        <div class="glass"
+                            style="aspect-ratio: 1/1; border-radius: 20px; overflow: hidden; margin-bottom: 1rem; position: relative;">
                             <img id="mainImage" src="{{ asset($product->images[0]) }}" alt="{{ $product->name }}"
-                                style="width: 100%; height: 100%; object-fit: cover;">
+                                style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
+
+                            <!-- Image zoom indicator -->
+                            <div
+                                style="position: absolute; bottom: 1rem; right: 1rem; background: rgba(0,0,0,0.5); padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem;">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Hover to zoom
+                            </div>
                         </div>
                         @if(count($product->images) > 1)
-                            <div style="display: flex; gap: 1rem;">
+                            <div style="display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem;">
                                 @foreach($product->images as $index => $image)
                                     <img src="{{ asset($image) }}" alt="{{ $product->name }}"
-                                        onclick="document.getElementById('mainImage').src='{{ asset($image) }}'"
-                                        style="width: 100px; height: 100px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid {{ $index === 0 ? 'var(--primary)' : 'transparent' }}; transition: var(--transition);"
-                                        onmouseover="this.style.borderColor='var(--primary)'"
-                                        onmouseout="this.style.borderColor='{{ $index === 0 ? 'var(--primary)' : 'transparent' }}'">
+                                        onclick="document.getElementById('mainImage').src='{{ asset($image) }}'; document.querySelectorAll('.thumbnail-img').forEach(img => img.style.borderColor='transparent'); this.style.borderColor='var(--primary)';"
+                                        class="thumbnail-img"
+                                        style="width: 100px; height: 100px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid {{ $index === 0 ? 'var(--primary)' : 'transparent' }}; transition: var(--transition); flex-shrink: 0;"
+                                        onmouseover="this.style.transform='scale(1.05)'"
+                                        onmouseout="this.style.transform='scale(1)'">
                                 @endforeach
                             </div>
                         @endif
                     @else
-                        <div
-                            style="aspect-ratio: 1/1; background: var(--surface); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+                        <div class="glass"
+                            style="aspect-ratio: 1/1; border-radius: 20px; display: flex; align-items: center; justify-content: center;">
                             <i class="fa-solid fa-image" style="font-size: 5rem; color: var(--text-muted);"></i>
                         </div>
                     @endif
@@ -38,14 +47,48 @@
                     <span
                         style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;">{{ $product->category }}</span>
                     <h1 style="font-size: 2.5rem; margin: 1rem 0;">{{ $product->name }}</h1>
-                    <p style="font-size: 2rem; color: var(--primary); font-weight: 700; margin-bottom: 2rem;">
-                        RM{{ number_format($product->price, 2) }}</p>
+
+                    <!-- Price with badge -->
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                        <p style="font-size: 2rem; color: var(--primary); font-weight: 700; margin: 0;">
+                            RM{{ number_format($product->price, 2) }}
+                        </p>
+                        @if(array_sum([$product->stock_small, $product->stock_medium, $product->stock_large, $product->stock_xl, $product->stock_2xl]) < 10)
+                            <span
+                                style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                                <i class="fa-solid fa-fire"></i> Low Stock
+                            </span>
+                        @endif
+                    </div>
 
                     <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 2rem;">
-                        {{ $product->description }}</p>
+                        {{ $product->description }}
+                    </p>
+
+                    <!-- Product Features -->
+                    <div class="glass" style="padding: 1.5rem; border-radius: 16px; margin-bottom: 2rem;">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fa-solid fa-truck-fast" style="color: var(--primary);"></i>
+                                <span style="font-size: 0.9rem;">Free Shipping</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i>
+                                <span style="font-size: 0.9rem;">Secure Payment</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fa-solid fa-rotate-left" style="color: var(--primary);"></i>
+                                <span style="font-size: 0.9rem;">Easy Returns</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fa-solid fa-certificate" style="color: var(--primary);"></i>
+                                <span style="font-size: 0.9rem;">Authentic</span>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Size Selection -->
-                    <form action="{{ route('cart.add') }}" method="POST">
+                    <form action="{{ route('cart.add', $product) }}" method="POST">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
 
@@ -57,13 +100,19 @@
                                         <label style="cursor: pointer;">
                                             <input type="radio" name="size" value="{{ $size }}" required style="display: none;"
                                                 class="size-radio">
-                                            <div class="size-option"
+                                            <div class="size-option glass"
                                                 style="padding: 1rem 1.5rem; border: 2px solid var(--glass-border); border-radius: 12px; transition: var(--transition); text-align: center; min-width: 80px;">
                                                 <div style="font-weight: 600;">{{ $size }}</div>
                                                 <div style="font-size: 0.8rem; color: var(--text-muted);">{{ $stock }} left
                                                 </div>
                                             </div>
                                         </label>
+                                    @else
+                                        <div class="glass"
+                                            style="padding: 1rem 1.5rem; border: 2px solid var(--glass-border); border-radius: 12px; text-align: center; min-width: 80px; opacity: 0.5; position: relative;">
+                                            <div style="font-weight: 600; text-decoration: line-through;">{{ $size }}</div>
+                                            <div style="font-size: 0.8rem; color: #ef4444;">Out of Stock</div>
+                                        </div>
                                     @endif
                                 @endforeach
                             </div>
@@ -88,10 +137,125 @@
         .size-radio:checked+.size-option {
             border-color: var(--primary);
             background: rgba(139, 92, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
         }
 
         .size-option:hover {
             border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        #mainImage:hover {
+            transform: scale(1.05);
         }
     </style>
 </x-ramarama-layout>
+
+<!-- Success Modal -->
+<div id="successModal"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; align-items: center; justify-content: center; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);">
+    <div class="glass animate-up"
+        style="padding: 2.5rem; border-radius: 20px; max-width: 450px; width: 90%; text-align: center; border: 1px solid var(--primary-glow);">
+        <div
+            style="width: 60px; height: 60px; background: rgba(34, 197, 94, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+            <i class="fa-solid fa-check" style="font-size: 1.5rem; color: #4ade80;"></i>
+        </div>
+
+        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Added to Cart!</h3>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Item has been successfully added to your cart.</p>
+
+        <div style="display: flex; gap: 1rem; flex-direction: column;">
+            <a href="{{ route('cart.index') }}" class="btn-primary" style="text-align: center;">View Cart</a>
+            <button onclick="closeModal()"
+                style="background: transparent; border: 1px solid var(--glass-border); color: var(--text-muted); padding: 0.8rem; border-radius: 50px; cursor: pointer; transition: var(--transition);"
+                onmouseover="this.style.borderColor='var(--text-main)'; this.style.color='var(--text-main)'"
+                onmouseout="this.style.borderColor='var(--glass-border)'; this.style.color='var(--text-muted)'">
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelector('form[action="{{ route('cart.add', $product) }}"]').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const form = this;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+
+        // Show loading state
+        submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Adding...';
+        submitBtn.disabled = true;
+
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showModal();
+                    // Optional: Update cart counter in header if it exists
+                    // const cartCounter = document.getElementById('cart-count');
+                    // if(cartCounter) cartCounter.innerText = data.cartCount;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again.');
+            })
+            .finally(() => {
+                // Reset button
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+    });
+
+    function showModal() {
+        const modal = document.getElementById('successModal');
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('successModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // Close modal on outside click
+    document.getElementById('successModal').addEventListener('click', function (e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+
+    // Escape key to close
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && document.getElementById('successModal').style.display === 'flex') {
+            closeModal();
+        }
+    });
+</script>
+
+<style>
+    .size-radio:checked+.size-option {
+        border-color: var(--primary);
+        background: rgba(139, 92, 246, 0.1);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    .size-option:hover {
+        border-color: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    #mainImage:hover {
+        transform: scale(1.05);
+    }
+</style>

@@ -1,0 +1,34 @@
+// Admin Sidebar
+.admin-sidebar {
+    width: 280px;
+    background: $bg-secondary;
+    border-right: 1px solid $glass-border;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    padding: 2rem;
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 3rem;
+}
+
+.admin-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    color: $text-muted;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: $transition;
+
+    &:hover,
+    &.active {
+        background: $surface;
+        color: $text-main;
+    }
+}

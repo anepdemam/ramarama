@@ -1,0 +1,67 @@
+// Forms
+input,
+select,
+textarea {
+    background: $surface;
+    border: 1px solid $glass-border;
+    color: white;
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    transition: $transition;
+
+    &:focus {
+        outline: none;
+        border-color: $primary;
+        background: rgba(255, 255, 255, 0.08);
+    }
+}
+
+select {
+    appearance: none;
+    background: $surface;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid $glass-border;
+    color: $text-main;
+    padding: 0.8rem 3rem 0.8rem 1.2rem;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: $transition;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+    option {
+        background: $bg-secondary;
+        color: $text-main;
+        padding: 1rem;
+        font-weight: 500;
+
+        &:hover {
+            background: $surface-hover;
+        }
+    }
+
+    &:hover {
+        border-color: $primary;
+        background: $surface-hover;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $primary;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+}
+
+.custom-select-wrapper {
+    position: relative;
+
+    .custom-select {
+        width: 100%;
+    }
+}

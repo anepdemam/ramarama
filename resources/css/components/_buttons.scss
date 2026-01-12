@@ -1,0 +1,20 @@
+// Buttons
+.btn-primary {
+    background: linear-gradient(135deg, $primary, $accent);
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    transition: $transition;
+    box-shadow: 0 10px 20px -5px $primary-glow;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px -5px $primary-glow;
+        filter: brightness(1.1);
+    }
+}

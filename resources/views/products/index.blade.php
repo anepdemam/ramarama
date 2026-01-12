@@ -8,26 +8,38 @@
         <!-- Search & Filters -->
         <div style="max-width: 1200px; margin: 0 auto 3rem; padding: 0 2rem;">
             <form method="GET" action="{{ route('products.index') }}"
-                style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; align-items: center;">
                 <input type="text" name="search" placeholder="Search products..." value="{{ request('search') }}"
                     style="max-width: 400px; flex: 1;">
 
-                <select name="category" style="max-width: 200px;">
-                    <option value="">All Categories</option>
-                    <option value="Tops" {{ request('category') == 'Tops' ? 'selected' : '' }}>Tops</option>
-                    <option value="Hoodies" {{ request('category') == 'Hoodies' ? 'selected' : '' }}>Hoodies</option>
-                    <option value="Bottoms" {{ request('category') == 'Bottoms' ? 'selected' : '' }}>Bottoms</option>
-                    <option value="Outerwear" {{ request('category') == 'Outerwear' ? 'selected' : '' }}>Outerwear
-                    </option>
-                </select>
+                <!-- Custom Category Dropdown -->
+                <div class="custom-select-wrapper" style="max-width: 200px; position: relative;">
+                    <select name="category" class="custom-select">
+                        <option value="">All Categories</option>
+                        <option value="Tops" {{ request('category') == 'Tops' ? 'selected' : '' }}>Tops</option>
+                        <option value="Hoodies" {{ request('category') == 'Hoodies' ? 'selected' : '' }}>Hoodies</option>
+                        <option value="Bottoms" {{ request('category') == 'Bottoms' ? 'selected' : '' }}>Bottoms</option>
+                        <option value="Outerwear" {{ request('category') == 'Outerwear' ? 'selected' : '' }}>Outerwear
+                        </option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down"
+                        style="position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); color: var(--primary); pointer-events: none; font-size: 0.8rem;"></i>
+                </div>
 
-                <select name="sort" style="max-width: 200px;">
-                    <option value="">Sort By</option>
-                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to High
-                    </option>
-                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to Low
-                    </option>
-                </select>
+                <!-- Custom Sort Dropdown -->
+                <div class="custom-select-wrapper" style="max-width: 200px; position: relative;">
+                    <select name="sort" class="custom-select">
+                        <option value="">Sort By</option>
+                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to
+                            High
+                        </option>
+                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to
+                            Low
+                        </option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down"
+                        style="position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); color: var(--primary); pointer-events: none; font-size: 0.8rem;"></i>
+                </div>
 
                 <button type="submit" class="btn-primary" style="padding: 0.8rem 2rem;">
                     <i class="fa-solid fa-search"></i> Search
