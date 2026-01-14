@@ -1,31 +1,114 @@
 // Footer
 footer {
-    padding: 6rem 2rem;
+    padding: 6rem 2rem 3rem;
     background: $bg-secondary;
     border-top: 1px solid $glass-border;
-    text-align: center;
 }
 
-.footer-logo {
-    font-size: 2rem;
-    margin-bottom: 2rem;
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+
+    @media (max-width: 992px) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 576px) {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+}
+
+.footer-section {
+    h4 {
+        color: $text-main;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    &.brand {
+        p {
+            color: $text-muted;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+    }
+
+    &.contact {
+        p {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: $text-muted;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+
+            i {
+                color: $primary;
+                width: 16px;
+            }
+        }
+    }
+}
+
+.footer-logo-img {
+    height: 48px;
+    width: auto;
+    margin-bottom: 1.5rem;
     display: block;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+
+    li {
+        margin-bottom: 0.8rem;
+
+        a {
+            color: $text-muted;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: $transition;
+
+            &:hover {
+                color: $primary;
+                padding-left: 5px;
+            }
+        }
+    }
 }
 
 .social-links {
     display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
+    gap: 1.5rem;
+    margin-top: 2rem;
 
     a {
         color: $text-muted;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         transition: $transition;
 
         &:hover {
             color: $primary;
             transform: translateY(-3px);
         }
+    }
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 2rem;
+    text-align: center;
+
+    p {
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 0.85rem;
     }
 }

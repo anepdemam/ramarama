@@ -29,7 +29,7 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Order $order, \App\Services\TrackingService $trackingService)
     {
         $request->validate([
             'status' => 'required|string',
@@ -37,6 +37,13 @@ class OrderController extends Controller
         ]);
 
         $order->update($request->only('status', 'tracking_number'));
+
+        // Register shipment with Tracking.my if status is Shipped and has tracking number
+        if ($request->status === 'Shipped' && $request->filled('tracking_number')) {
+            // Assuming 'courier' might be determined or defaults to auto-detect by Tracking.my
+            // For now passing 'auto' or we could add a courier field later
+            $trackingService->registerShipment($request->tracking_number, 'auto', $order->id);
+        }
 
         return redirect()->route('admin.orders.index')->with('success', 'Order updated successfully!');
     }

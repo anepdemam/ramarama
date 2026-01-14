@@ -21,14 +21,14 @@
 
     <header class="navbar" id="mainNavbar">
         <div class="nav-container">
-            <a href="{{ url('/') }}" class="logo">RAMARAMA</a>
+            <img src="{{ asset('images/global/logo.png') }}" alt="Logo" class="logo">
 
             <nav>
                 <ul class="nav-links">
                     <li><a href="{{ url('/') }}">Home</a></li>
                     <li><a href="{{ route('products.index') }}">Collections</a></li>
                     @auth
-                        @if(Auth::user()->isAdmin())
+                        @if(Auth::user() instanceof \App\Models\User && Auth::user()->isAdmin())
                             <li><a href="{{ route('admin.dashboard') }}">Admin</a></li>
                         @else
                             <li><a href="{{ route('orders.index') }}">My Orders</a></li>

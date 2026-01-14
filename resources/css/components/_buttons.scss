@@ -18,3 +18,23 @@
         filter: brightness(1.1);
     }
 }
+
+.btn-secondary {
+    background: $surface;
+    backdrop-filter: blur(10px);
+    border: 1px solid $glass-border;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    transition: $transition;
+
+    &:hover {
+        background: $surface-hover;
+        border-color: $primary;
+        transform: translateY(-3px);
+    }
+}

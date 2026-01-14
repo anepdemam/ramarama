@@ -1,23 +1,6 @@
 <x-ramarama-layout>
     <div style="display: flex; min-height: 100vh; padding-top: 80px;">
-        <!-- Admin Sidebar -->
-        <aside class="admin-sidebar">
-            <h2 style="font-size: 1.5rem; margin-bottom: 2rem;">Admin Panel</h2>
-            <nav class="admin-nav">
-                <a href="{{ route('admin.dashboard') }}" class="admin-nav-link">
-                    <i class="fa-solid fa-chart-line"></i> Dashboard
-                </a>
-                <a href="{{ route('admin.products.index') }}" class="admin-nav-link">
-                    <i class="fa-solid fa-box"></i> Products
-                </a>
-                <a href="{{ route('admin.orders.index') }}" class="admin-nav-link active">
-                    <i class="fa-solid fa-shopping-cart"></i> Orders
-                </a>
-                <a href="{{ url('/') }}" class="admin-nav-link">
-                    <i class="fa-solid fa-globe"></i> View Site
-                </a>
-            </nav>
-        </aside>
+        <x-admin-sidebar active="orders" />
 
         <main style="flex: 1; padding: 3rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
@@ -186,6 +169,45 @@
                                 <p style="font-weight: 500;">{{ $order->payment_method }}</p>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Manage Order -->
+                    <div class="glass"
+                        style="padding: 2rem; border-radius: 20px; border-top: 4px solid var(--primary);">
+                        <h3
+                            style="font-size: 1.2rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-gear" style="color: var(--primary);"></i> Manage Order
+                        </h3>
+                        <form action="{{ route('admin.orders.update', $order) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                <div>
+                                    <label
+                                        style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Order
+                                        Status</label>
+                                    <select name="status"
+                                        style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 12px; color: white;">
+                                        @foreach(['Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'] as $status)
+                                            <option value="{{ $status }}" {{ $order->status === $status ? 'selected' : '' }}>
+                                                {{ $status }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Tracking
+                                        Number</label>
+                                    <input type="text" name="tracking_number" value="{{ $order->tracking_number }}"
+                                        placeholder="Enter tracking..."
+                                        style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 12px; color: white;">
+                                </div>
+                                <button type="submit" class="btn-primary"
+                                    style="width: 100%; padding: 1rem; border-radius: 12px;">
+                                    Update Order
+                                </button>
+                            </div>
+                        </form>
                     </div>
 
                 </div>

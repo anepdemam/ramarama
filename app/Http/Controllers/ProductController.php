@@ -59,7 +59,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('products.show', compact('product'));
+        $reviews = $product->reviews()->where('is_approved', true)->with('user')->latest()->get();
+        $averageRating = $reviews->avg('rating');
+
+        return view('products.show', compact('product', 'reviews', 'averageRating'));
     }
 
     public function suggestions(Request $request)

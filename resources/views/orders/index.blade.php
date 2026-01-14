@@ -1,9 +1,12 @@
 <x-ramarama-layout>
-    <div style="padding-top: 120px; padding-bottom: 4rem; max-width: 1200px; margin: 0 auto; padding-left: 2rem; padding-right: 2rem;">
-        
+    <div
+        style="padding-top: 120px; padding-bottom: 4rem; max-width: 1200px; margin: 0 auto; padding-left: 2rem; padding-right: 2rem;">
+
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
             <div>
-                <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">My Orders</h1>
+                <h1
+                    style="font-size: 2.5rem; margin-bottom: 0.5rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    My Orders</h1>
                 <p style="color: var(--text-muted);">View and track your purchase history</p>
             </div>
             <a href="{{ route('products.index') }}" class="btn-primary" style="text-decoration: none;">
@@ -12,7 +15,8 @@
         </div>
 
         @if(session('success'))
-            <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); padding: 1rem; border-radius: 12px; margin-bottom: 2rem; color: #22c55e; display: flex; align-items: center; gap: 0.5rem;">
+            <div
+                style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); padding: 1rem; border-radius: 12px; margin-bottom: 2rem; color: #22c55e; display: flex; align-items: center; gap: 0.5rem;">
                 <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
             </div>
         @endif
@@ -36,29 +40,47 @@
                                     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                                         @foreach($order->items->take(2) as $item)
                                             <div style="display: flex; align-items: center; gap: 1rem;">
-                                                <img src="{{ asset($item->product->images[0] ?? 'images/placeholder.jpg') }}" alt="{{ $item->product->name }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px;">
+                                                <img src="{{ asset($item->product->images[0] ?? 'images/placeholder.jpg') }}"
+                                                    alt="{{ $item->product->name }}"
+                                                    style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px;">
                                                 <div>
-                                                    <span style="font-weight: 500; display: block; font-size: 0.95rem;">{{ $item->product->name }}</span>
-                                                    <span style="font-size: 0.8rem; color: var(--text-muted);">{{ $item->size }} x {{ $item->quantity }}</span>
+                                                    <span
+                                                        style="font-weight: 500; display: block; font-size: 0.95rem;">{{ $item->product->name }}</span>
+                                                    <span style="font-size: 0.8rem; color: var(--text-muted);">{{ $item->size }} x
+                                                        {{ $item->quantity }}</span>
                                                 </div>
                                             </div>
                                         @endforeach
                                         @if($order->items->count() > 2)
-                                            <span style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">+ {{ $order->items->count() - 2 }} more items...</span>
+                                            <span style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">+
+                                                {{ $order->items->count() - 2 }} more items...</span>
                                         @endif
                                     </div>
                                 </td>
-                                <td style="font-weight: 600; color: var(--primary);">RM{{ number_format($order->total, 2) }}</td>
+                                <td style="font-weight: 600; color: var(--primary);">RM{{ number_format($order->total, 2) }}
+                                </td>
                                 <td>
-                                    <span style="padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.85rem; background: {{ $order->status === 'Completed' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(139, 92, 246, 0.2)' }}; color: {{ $order->status === 'Completed' ? '#22c55e' : '#a78bfa' }}; border: 1px solid {{ $order->status === 'Completed' ? 'rgba(34, 197, 94, 0.3)' : 'rgba(139, 92, 246, 0.3)' }};">
+                                    <span
+                                        style="padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.85rem; background: {{ $order->status === 'Completed' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(139, 92, 246, 0.2)' }}; color: {{ $order->status === 'Completed' ? '#22c55e' : '#a78bfa' }}; border: 1px solid {{ $order->status === 'Completed' ? 'rgba(34, 197, 94, 0.3)' : 'rgba(139, 92, 246, 0.3)' }};">
                                         {{ $order->status }}
                                     </span>
                                 </td>
                                 <td style="color: var(--text-muted);">{{ $order->created_at->format('d M Y') }}</td>
                                 <td style="text-align: right;">
-                                    <a href="{{ route('orders.show', $order) }}" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.5rem 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; transition: var(--transition); border: 1px solid var(--glass-border);" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-                                        Details <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem;"></i>
-                                    </a>
+                                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                                        @if(in_array($order->status, ['Shipped', 'Completed']))
+                                            <button onclick="openTrackModal('{{ $order->id }}')" class="btn-secondary"
+                                                style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.9rem;">
+                                                <i class="fa-solid fa-truck-fast"></i> Track
+                                            </button>
+                                        @endif
+                                        <a href="{{ route('orders.show', $order) }}"
+                                            style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-main); text-decoration: none; padding: 0.5rem 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; transition: var(--transition); border: 1px solid var(--glass-border);"
+                                            onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                                            onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                                            Details <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem;"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -72,8 +94,10 @@
                 @endif
             </div>
         @else
-            <div class="glass" style="padding: 4rem; border-radius: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
-                <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <div class="glass"
+                style="padding: 4rem; border-radius: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+                <div
+                    style="width: 80px; height: 80px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                     <i class="fa-solid fa-box-open" style="font-size: 2.5rem; color: var(--text-muted);"></i>
                 </div>
                 <div>
@@ -86,4 +110,64 @@
             </div>
         @endif
     </div>
+
+    <!-- Tracking Modal -->
+    <div id="trackingModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; backdrop-filter: blur(8px); background: rgba(0,0,0,0.6);">
+        <div
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; background: rgba(20, 20, 20, 0.95); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+            <button onclick="closeTrackModal()"
+                style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div id="trackingModalContent"
+                style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                <div class="loader">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTrackModal(orderId) {
+            const modal = document.getElementById('trackingModal');
+            const content = document.getElementById('trackingModalContent');
+
+            modal.style.display = 'block';
+            content.innerHTML = '<div style="color: var(--text-muted);"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading tracking info...</div>';
+
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+
+            // Fetch tracking data
+            fetch(`{{ route('orders.track') }}?order_id=${orderId}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    content.innerHTML = data.html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    content.innerHTML = '<div style="color: #ef4444; text-align: center;"><i class="fa-solid fa-circle-exclamation"></i> Failed to load tracking info.</div>';
+                });
+        }
+
+        function closeTrackModal() {
+            const modal = document.getElementById('trackingModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on click outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('trackingModal');
+            if (event.target == modal) {
+                closeTrackModal();
+            }
+        }
+    </script>
 </x-ramarama-layout>

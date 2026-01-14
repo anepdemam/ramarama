@@ -27,11 +27,9 @@
 }
 
 .logo {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    @include gradient-text;
+    height: 40px;
+    width: auto;
+    object-fit: contain;
     text-decoration: none;
 }
 

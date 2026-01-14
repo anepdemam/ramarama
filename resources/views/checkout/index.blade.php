@@ -63,18 +63,47 @@
                                 <div>
                                     <p style="font-weight: 600;">{{ $item['name'] }}</p>
                                     <p style="color: var(--text-muted); font-size: 0.9rem;">{{ $item['size'] }} ×
-                                        {{ $item['quantity'] }}</p>
+                                        {{ $item['quantity'] }}
+                                    </p>
                                 </div>
                                 <p style="font-weight: 600;">RM{{ number_format($item['price'] * $item['quantity'], 2) }}
                                 </p>
                             </div>
                         @endforeach
 
+                        <div
+                            style="margin-top: 2rem; padding: 1.5rem; border-radius: 12px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border);">
+                            <h3 style="font-size: 1rem; margin-bottom: 1rem;">Have a Promo Code?</h3>
+                            <form action="{{ route('checkout.voucher') }}" method="POST"
+                                style="display: flex; gap: 0.5rem;">
+                                @csrf
+                                <input type="text" name="code" placeholder="Enter code" style="flex: 1;" required>
+                                <button type="submit" class="btn-secondary"
+                                    style="padding: 0.5rem 1rem; border-radius: 8px;">Apply</button>
+                            </form>
+                            @if($voucher)
+                                <div
+                                    style="margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; color: var(--primary);">
+                                    <span style="font-size: 0.9rem;"><i class="fa-solid fa-tag"></i> Code
+                                        <strong>{{ $voucher['code'] }}</strong> applied</span>
+                                    <a href="#" onclick="alert('TODO: remove voucher logic')"
+                                        style="color: #ef4444; font-size: 0.8rem;">Remove</a>
+                                </div>
+                            @endif
+                        </div>
+
                         <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--glass-border);">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
                                 <p style="color: var(--text-muted);">Subtotal</p>
                                 <p>RM{{ number_format($total, 2) }}</p>
                             </div>
+                            @if($discount > 0)
+                                <div
+                                    style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: #22c55e;">
+                                    <p>Discount</p>
+                                    <p>-RM{{ number_format($discount, 2) }}</p>
+                                </div>
+                            @endif
                             <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
                                 <p style="color: var(--text-muted);">Shipping</p>
                                 <p style="color: #22c55e;">FREE</p>
@@ -82,7 +111,7 @@
                             <div
                                 style="display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: 700; color: var(--primary);">
                                 <p>Total</p>
-                                <p>RM{{ number_format($total, 2) }}</p>
+                                <p>RM{{ number_format($finalTotal, 2) }}</p>
                             </div>
                         </div>
                     </div>

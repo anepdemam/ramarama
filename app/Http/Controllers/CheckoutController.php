@@ -10,6 +10,9 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Voucher;
+use Carbon\Carbon;
+
 class CheckoutController extends Controller
 {
     public function index()
@@ -24,7 +27,58 @@ class CheckoutController extends Controller
             $total += $item['price'] * $item['quantity'];
         }
 
-        return view('checkout.index', compact('cart', 'total'));
+        $voucher = Session::get('voucher');
+        $discount = 0;
+
+        if ($voucher) {
+            if ($voucher['discount_type'] === 'percentage') {
+                $discount = ($total * $voucher['discount_value']) / 100;
+                if ($voucher['max_discount'] && $discount > $voucher['max_discount']) {
+                    $discount = $voucher['max_discount'];
+                }
+            } else {
+                $discount = $voucher['discount_value'];
+            }
+        }
+
+        $finalTotal = max(0, $total - $discount);
+
+        return view('checkout.index', compact('cart', 'total', 'discount', 'finalTotal', 'voucher'));
+    }
+
+    public function applyVoucher(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ]);
+
+        $voucher = Voucher::where('code', $request->code)->first();
+
+        if (!$voucher) {
+            return back()->with('error', 'Invalid voucher code.');
+        }
+
+        if ($voucher->expiration_date && Carbon::parse($voucher->expiration_date)->isPast()) {
+            return back()->with('error', 'This voucher has expired.');
+        }
+
+        $total = 0;
+        foreach (Session::get('cart', []) as $item) {
+            $total += $item['price'] * $item['quantity'];
+        }
+
+        if ($total < $voucher->min_spend) {
+            return back()->with('error', 'Minimum spend of RM' . number_format($voucher->min_spend, 2) . ' required.');
+        }
+
+        Session::put('voucher', [
+            'code' => $voucher->code,
+            'discount_type' => $voucher->discount_type,
+            'discount_value' => $voucher->discount_value,
+            'max_discount' => $voucher->max_discount,
+        ]);
+
+        return back()->with('success', 'Voucher applied successfully!');
     }
 
     public function process(Request $request)
@@ -45,17 +99,35 @@ class CheckoutController extends Controller
             $total += $item['price'] * $item['quantity'];
         }
 
+        $voucher = Session::get('voucher');
+        $discount = 0;
+
+        if ($voucher) {
+            if ($voucher['discount_type'] === 'percentage') {
+                $discount = ($total * $voucher['discount_value']) / 100;
+                if (isset($voucher['max_discount']) && $voucher['max_discount'] && $discount > $voucher['max_discount']) {
+                    $discount = $voucher['max_discount'];
+                }
+            } else {
+                $discount = $voucher['discount_value'];
+            }
+        }
+
+        $finalTotal = max(0, $total - $discount);
+
         try {
             DB::beginTransaction();
 
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'status' => 'Pending',
-                'total' => $total,
-                'payment_method' => 'FPX Online Banking', // Dummy value for now
+                'total' => $finalTotal,
+                'payment_method' => 'FPX Online Banking',
                 'shipping_name' => $request->shipping_name,
                 'shipping_phone' => $request->shipping_phone,
                 'shipping_address' => $request->shipping_address,
+                'voucher_code' => $voucher ? $voucher['code'] : null,
+                'discount' => $discount,
             ]);
 
             foreach ($cart as $item) {
@@ -79,6 +151,7 @@ class CheckoutController extends Controller
 
             DB::commit();
             Session::forget('cart');
+            Session::forget('voucher');
 
             return redirect()->route('orders.index')->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {

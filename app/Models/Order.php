@@ -15,6 +15,8 @@ class Order extends Model
         'shipping_name',
         'shipping_phone',
         'shipping_address',
+        'voucher_code',
+        'discount',
     ];
 
     public function user()

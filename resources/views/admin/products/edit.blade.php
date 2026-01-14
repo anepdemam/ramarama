@@ -1,88 +1,129 @@
 <x-ramarama-layout>
-    <div class="admin-container" style="display: flex;">
-        <nav class="unique-admin-sidebar" style="width: 250px; background: #333; color: #fff; padding: 20px;">
-            <h3>Admin Panel</h3>
-            <ul style="list-style: none; padding: 0;">
-                <li><a href="{{ route('admin.dashboard') }}"
-                        style="color: #fff; display: block; padding: 10px;">Dashboard</a></li>
-                <li><a href="{{ route('admin.products.index') }}"
-                        style="color: #666; background: #eee; display: block; padding: 10px;">Products</a></li>
-                <li><a href="{{ route('admin.orders.index') }}"
-                        style="color: #fff; display: block; padding: 10px;">Orders</a></li>
-                <li><a href="{{ url('/') }}" style="color: #fff; display: block; padding: 10px;">View Site</a></li>
-            </ul>
-        </nav>
+    <div style="display: flex; min-height: 100vh; padding-top: 80px;">
+        <x-admin-sidebar active="products" />
 
-        <main class="unique-admin-main" style="flex: 1; padding: 20px;">
-            <h1>Edit Product: {{ $product->name }}</h1>
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1>Edit Product: {{ $product->name }}</h1>
+                <a href="{{ route('admin.products.index') }}" class="btn-secondary">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Products
+                </a>
+            </div>
 
-            <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data"
-                class="manage-products-form">
-                @csrf
-                @method('PUT')
-                <div class="form-group">
-                    <label for="name">Product Name:</label>
-                    <input type="text" name="name" id="name" class="form-control" value="{{ $product->name }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="category">Category:</label>
-                    <input type="text" name="category" id="category" class="form-control"
-                        value="{{ $product->category }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="price">Price (RM):</label>
-                    <input type="number" step="0.01" name="price" id="price" class="form-control"
-                        value="{{ $product->price }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea name="description" id="description" class="form-control" rows="5"
-                        required>{{ $product->description }}</textarea>
-                </div>
+            <div class="admin-glass-panel">
+                <form action="{{ route('admin.products.update', $product) }}" method="POST"
+                    enctype="multipart/form-data" class="manage-products-form">
+                    @csrf
+                    @method('PUT')
 
-                <div class="stocks-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;">
-                    <div class="form-group">
-                        <label for="stock_small">S Stock:</label>
-                        <input type="number" name="stock_small" id="stock_small" value="{{ $product->stock_small }}"
-                            class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="stock_medium">M Stock:</label>
-                        <input type="number" name="stock_medium" id="stock_medium" value="{{ $product->stock_medium }}"
-                            class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="stock_large">L Stock:</label>
-                        <input type="number" name="stock_large" id="stock_large" value="{{ $product->stock_large }}"
-                            class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="stock_xl">XL Stock:</label>
-                        <input type="number" name="stock_xl" id="stock_xl" value="{{ $product->stock_xl }}"
-                            class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="stock_2xl">2XL Stock:</label>
-                        <input type="number" name="stock_2xl" id="stock_2xl" value="{{ $product->stock_2xl }}"
-                            class="form-control">
-                    </div>
-                </div>
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 3rem;">
+                        <!-- Basic Info Section -->
+                        <div style="display: flex; flex-direction: column; gap: 2rem;">
+                            <div class="form-group">
+                                <label for="name"
+                                    style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">Product
+                                    Name</label>
+                                <input type="text" name="name" id="name" value="{{ $product->name }}" required>
+                            </div>
 
-                <div class="form-group">
-                    <label for="images">Add More Images:</label>
-                    <input type="file" name="images[]" id="images" class="form-control" multiple>
-                    <div class="current-images" style="display: flex; gap: 10px; margin-top: 10px;">
-                        @foreach($product->images as $image)
-                            <img src="{{ asset($image) }}" width="50" style="border: 1px solid #ddd;">
-                        @endforeach
-                    </div>
-                </div>
+                            <div class="form-group">
+                                <label for="description"
+                                    style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">Description</label>
+                                <textarea name="description" id="description" rows="8"
+                                    required>{{ $product->description }}</textarea>
+                            </div>
+                        </div>
 
-                <div style="margin-top: 20px;">
-                    <button type="submit" class="btn">Update Product</button>
-                    <a href="{{ route('admin.products.index') }}" style="margin-left: 10px;">Cancel</a>
-                </div>
-            </form>
+                        <!-- Sidebar Info Section -->
+                        <div style="display: flex; flex-direction: column; gap: 2rem;">
+                            <div class="form-group">
+                                <label for="category"
+                                    style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">Category</label>
+                                <input type="text" name="category" id="category" value="{{ $product->category }}"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="price"
+                                    style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">Price
+                                    (RM)</label>
+                                <input type="number" step="0.01" name="price" id="price" value="{{ $product->price }}"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">Current
+                                    Images</label>
+                                <div class="current-images"
+                                    style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+                                    @foreach($product->images as $image)
+                                        <div
+                                            style="position: relative; width: 60px; height: 60px; border-radius: 8px; overflow: hidden; border: 1px solid var(--glass-border);">
+                                            <img src="{{ asset($image) }}"
+                                                style="width: 100%; height: 100%; object-fit: cover;">
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <label for="images"
+                                    style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">Add More
+                                    Images</label>
+                                <div style="position: relative;">
+                                    <input type="file" name="images[]" id="images" multiple
+                                        style="padding: 2rem; border-style: dashed; border-width: 2px;">
+                                    <i class="fa-solid fa-cloud-arrow-up"
+                                        style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stock Management Section -->
+                    <div style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--glass-border);">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 2rem;">Inventory Levels</h3>
+                        <div class="stocks-grid"
+                            style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem;">
+                            <div class="form-group">
+                                <label for="stock_small"
+                                    style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">Small</label>
+                                <input type="number" name="stock_small" id="stock_small"
+                                    value="{{ $product->stock_small }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="stock_medium"
+                                    style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">Medium</label>
+                                <input type="number" name="stock_medium" id="stock_medium"
+                                    value="{{ $product->stock_medium }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="stock_large"
+                                    style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">Large</label>
+                                <input type="number" name="stock_large" id="stock_large"
+                                    value="{{ $product->stock_large }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="stock_xl"
+                                    style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">XL</label>
+                                <input type="number" name="stock_xl" id="stock_xl" value="{{ $product->stock_xl }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="stock_2xl"
+                                    style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">2XL</label>
+                                <input type="number" name="stock_2xl" id="stock_2xl" value="{{ $product->stock_2xl }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 4rem; display: flex; gap: 1.5rem;">
+                        <button type="submit" class="btn-primary" style="padding-left: 3rem; padding-right: 3rem;">
+                            <i class="fa-solid fa-save"></i> Update Product
+                        </button>
+                        <a href="{{ route('admin.products.index') }}" class="btn-secondary">
+                            Discard Changes
+                        </a>
+                    </div>
+                </form>
+            </div>
         </main>
     </div>
 </x-ramarama-layout>
