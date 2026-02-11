@@ -49,7 +49,10 @@ class DatabaseSeeder extends Seeder
                 'stock_large' => 15,
                 'stock_xl' => 5,
                 'stock_2xl' => 2,
-                'images' => ['images/hero/bf.jpg', 'images/hero/bf1.jpg'],
+                'images' => [
+                    'images/collection_images/ramarama_hoodie (front).png',
+                    'images/collection_images/ramarama_hoodie (back).png'
+                ],
             ],
             [
                 'name' => 'White T-Shirt',
@@ -61,7 +64,10 @@ class DatabaseSeeder extends Seeder
                 'stock_large' => 40,
                 'stock_xl' => 20,
                 'stock_2xl' => 10,
-                'images' => ['images/hero/bf2.jpg'],
+                'images' => [
+                    'images/collection_images/tshirt front.png',
+                    'images/collection_images/tshirt back.png'
+                ],
             ],
             [
                 'name' => 'Oversized Graphic Tee',
@@ -73,7 +79,10 @@ class DatabaseSeeder extends Seeder
                 'stock_large' => 25,
                 'stock_xl' => 10,
                 'stock_2xl' => 5,
-                'images' => ['images/hero/bf.jpg'],
+                'images' => [
+                    'images/collection_images/tshirt back.png',
+                    'images/collection_images/tshirt front.png'
+                ],
             ],
             [
                 'name' => 'Cargo Joggers',
@@ -85,7 +94,7 @@ class DatabaseSeeder extends Seeder
                 'stock_large' => 20,
                 'stock_xl' => 10,
                 'stock_2xl' => 5,
-                'images' => ['images/hero/bf2.jpg'],
+                'images' => ['images/collection_images/cargojoggers.png'],
             ],
             [
                 'name' => 'Denim Jacket',
@@ -97,7 +106,7 @@ class DatabaseSeeder extends Seeder
                 'stock_large' => 10,
                 'stock_xl' => 5,
                 'stock_2xl' => 2,
-                'images' => ['images/hero/bf.jpg'],
+                'images' => ['images/collection_images/denimjacket.png'],
             ],
             [
                 'name' => 'Streetwear Cap',
@@ -109,7 +118,7 @@ class DatabaseSeeder extends Seeder
                 'stock_large' => 0,
                 'stock_xl' => 0,
                 'stock_2xl' => 0,
-                'images' => ['images/hero/bf2.jpg'],
+                'images' => ['images/collection_images/cap.png'],
             ],
             [
                 'name' => 'Track Pants',
@@ -121,7 +130,7 @@ class DatabaseSeeder extends Seeder
                 'stock_large' => 25,
                 'stock_xl' => 15,
                 'stock_2xl' => 5,
-                'images' => ['images/hero/bf.jpg'],
+                'images' => ['images/collection_images/trackpants.png'],
             ],
             [
                 'name' => 'Puffer Vest',
@@ -133,7 +142,7 @@ class DatabaseSeeder extends Seeder
                 'stock_large' => 15,
                 'stock_xl' => 8,
                 'stock_2xl' => 4,
-                'images' => ['images/hero/bf2.jpg'],
+                'images' => ['images/collection_images/puffer.png'],
             ],
         ];
 

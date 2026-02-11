@@ -5,113 +5,389 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding: 0 2rem;
-    max-width: 100%; // Override global section max-width to allow full width background
+    padding: 2rem 10rem;
+    max-width: 100%;
+
+    @media (max-width: 1200px) {
+        padding: 2rem 4rem;
+    }
+
+    @media (max-width: 768px) {
+        padding: 2rem 1.5rem;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 8rem;
+        padding-bottom: 6rem;
+    }
 
     &-container {
         display: flex;
-        align-items: stretch;
+        align-items: center;
         justify-content: space-between;
         width: 100%;
-        max-width: 1400px;
         margin: 0 auto;
         position: relative;
         z-index: 2;
         gap: 4rem;
+
+        @media (max-width: 1024px) {
+            flex-direction: column;
+            text-align: center;
+        }
     }
 
     &-content {
-        flex: 1;
-        max-width: 600px;
+        flex: 1.2;
+        max-width: 700px;
+
+        @media (max-width: 1024px) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
     }
 
     &-image {
         flex: 1;
         display: flex;
         justify-content: center;
+        position: relative;
+        height: 700px; // Increased height for lifestyle shots
 
-        img {
+        @media (max-width: 1024px) {
+            height: 500px;
+        }
+
+        @media (max-width: 768px) {
+            height: 400px;
+        }
+
+        .hero-slider {
+            position: relative;
             width: 100%;
             height: 100%;
-            max-height: 100%;
-            object-fit: cover;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .placeholder-box {
-            width: 100%;
-            max-width: 500px;
-            aspect-ratio: 4/5; // Vertical portrait ratio
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            color: $text-muted;
-            gap: 1rem;
-            backdrop-filter: blur(5px);
+            align-items: center;
+        }
 
-            i {
-                font-size: 3rem;
-                opacity: 0.5;
-            }
+        .slider-img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; // Changed from contain to cover for full-scene feel
+            border-radius: 20px;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            max-width: 600px;
 
-            span {
-                font-size: 0.9rem;
-                letter-spacing: 0.05em;
-                text-transform: uppercase;
+            &.active {
+                opacity: 1;
             }
         }
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.6rem 1.5rem;
+        background: rgba($white, 0.03);
+        border: 1px solid rgba($white, 0.08);
+        border-radius: 100px;
+        color: $text-secondary;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-weight: 600;
+        margin-bottom: 3rem;
     }
 
     h1 {
-        font-size: clamp(3rem, 8vw, 6rem);
-        line-height: 1;
-        margin-bottom: 2rem;
-        background: linear-gradient(to bottom, #fff 50%, #94a3b8);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-size: clamp(4rem, 10vw, 8.5rem);
+        line-height: 0.9;
+        margin-bottom: 3rem;
+        font-weight: 950;
+        letter-spacing: -0.04em;
+        color: $white;
+
+        .text-gradient {
+            background: $gradient-primary;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block; // Stack for more impact
+        }
     }
 
     p {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         color: $text-muted;
-        margin-bottom: 3rem;
-        max-width: 600px;
+        margin-bottom: 5rem;
+        max-width: 700px;
+        line-height: 1.5;
+        font-weight: 400;
     }
 
-    &-bg-glow {
+    .hero-actions {
+        display: flex;
+        gap: 2.5rem;
+        justify-content: center;
+
+        @media (max-width: 480px) {
+            flex-direction: column;
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+
+    // New subtle bg glow
+    &-bg-subtle {
         position: absolute;
-        width: 600px;
-        height: 600px;
-        background: $primary;
-        filter: blur(150px);
-        opacity: 0.15;
-        top: -100px;
-        right: -100px;
-        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 120%, rgba($primary, 0.08) 0%, transparent 60%);
+        top: 0;
+        left: 0;
         z-index: 1;
     }
+}
 
-    @media (max-width: 768px) {
+// Featured Section
+.section-featured {
+    padding: 10rem 3rem;
+    position: relative;
 
-        &-container {
-            flex-direction: column;
+    .section-header {
+        text-align: center;
+        margin-bottom: 2rem; // Reduced from 6rem
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+
+        .sub-title {
+            color: $primary;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-weight: 800;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1.5rem;
+        }
+
+        p {
+            color: $text-muted;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+    }
+}
+
+// Philosophy Section
+.section-philosophy {
+    padding: 12rem 3rem;
+    background: $bg-secondary;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 100% 0%, rgba($primary, 0.05) 0%, transparent 50%);
+        top: 0;
+        left: 0;
+    }
+
+    .philosophy-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 10rem;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+
+        @media (max-width: 992px) {
+            grid-template-columns: 1fr;
+            gap: 4rem;
             text-align: center;
-            justify-content: center;
-            gap: 2rem;
+        }
+    }
+
+    h2 {
+        font-size: clamp(3rem, 6vw, 6rem);
+        line-height: 1;
+        font-weight: 900;
+        margin-top: 2rem;
+    }
+
+    p {
+        font-size: 1.5rem;
+        color: $text-secondary;
+        line-height: 1.8;
+        margin-bottom: 3rem;
+    }
+
+    .phi-decoration {
+        position: absolute;
+        bottom: -2rem;
+        right: -2rem;
+        font-size: 20rem;
+        font-weight: 950;
+        color: rgba(255, 255, 255, 0.02);
+        line-height: 1;
+        pointer-events: none;
+        user-select: none;
+    }
+}
+
+// Community Section
+.section-community {
+    padding: 10rem 3rem;
+
+    .community-card {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 8rem 4rem;
+        background: $bg-accent;
+        border-radius: 40px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid $glass-border;
+        text-align: center;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba($primary, 0.1) 0%, transparent 100%);
         }
 
-        &-image {
-            display: none; // Hide image on mobile or remove this line to show it
+        .comm-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        h1 {
-            font-size: 3rem;
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 2rem;
         }
+
+        p {
+            font-size: 1.25rem;
+            color: $text-secondary;
+            margin-bottom: 4rem;
+            line-height: 1.6;
+        }
+    }
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.8rem;
+    border-radius: 100px;
+    border: 1px solid $glass-border;
+    backdrop-filter: blur(10px);
+
+    @media (max-width: 576px) {
+        flex-direction: column;
+        background: transparent;
+        padding: 0;
+        border: none;
+    }
+
+    input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        padding: 0 2rem;
+        color: white;
+        font-size: 1.1rem;
+        outline: none;
+
+        @media (max-width: 576px) {
+            background: rgba(0, 0, 0, 0.3);
+            height: 60px;
+            border-radius: 100px;
+            border: 1px solid $glass-border;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .btn-primary {
+        border-radius: 100px;
+        padding: 1rem 3rem;
+    }
+}
+
+// Animations
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-30px);
+    }
+}
+
+.animate-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    &.reveal {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn-link {
+    color: $primary-light;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    transition: $transition-fast;
+
+    &:hover {
+        gap: 1.5rem;
+        color: $white;
+    }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 10rem 0;
+
+    i {
+        font-size: 5rem;
+        color: rgba($primary, 0.2);
+        margin-bottom: 2rem;
+        display: block;
+    }
+
+    p {
+        font-size: 1.5rem;
+        color: $text-muted;
+        margin-bottom: 3rem;
     }
 }

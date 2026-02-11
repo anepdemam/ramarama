@@ -86,8 +86,20 @@ class CheckoutController extends Controller
         $request->validate([
             'shipping_name' => 'required|string|max:255',
             'shipping_phone' => 'required|string|max:20',
-            'shipping_address' => 'required|string',
+            'address_1' => 'required|string|max:255',
+            'address_2' => 'nullable|string|max:255',
+            'city' => 'required|string|max:255',
+            'postcode' => 'required|string|max:20',
+            'state' => 'required|string|max:255',
         ]);
+
+        $fullAddress = $request->address_1;
+        if ($request->address_2) {
+            $fullAddress .= ', ' . $request->address_2;
+        }
+        $fullAddress .= ', ' . $request->postcode . ' ' . $request->city . ', ' . $request->state;
+
+        $request->merge(['shipping_address' => $fullAddress]);
 
         $cart = Session::get('cart', []);
         if (count($cart) == 0) {

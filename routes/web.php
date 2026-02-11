@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/chat', [App\Http\Controllers\ChatController::class, 'message'])->name('chat.message');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/suggestions', [ProductController::class, 'suggestions'])->name('products.suggestions');

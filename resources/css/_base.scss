@@ -6,6 +6,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: $bg-primary;
     color: $text-main;
@@ -13,6 +17,8 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 h1,
@@ -31,9 +37,10 @@ h6 {
 }
 
 // Sections
+// Sections
 section {
-    padding: 8rem 2rem;
-    max-width: 1400px;
+    padding: 8rem 3rem;
+    width: 100%; // Ensure full width
     margin: 0 auto;
 
     @media (max-width: 768px) {

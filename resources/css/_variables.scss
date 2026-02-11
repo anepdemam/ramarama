@@ -1,12 +1,33 @@
 // Variables
-$bg-primary: #050505;
-$bg-secondary: #0f0f12;
-$surface: rgba(255, 255, 255, 0.05);
-$surface-hover: rgba(255, 255, 255, 0.1);
-$primary: #8b5cf6;
+$bg-primary: #09090b; // Zinc 950 - Premium Neutral Black
+$bg-secondary: #0d0d10; // Slightly lighter for depth
+$bg-accent: #111114;
+
+$surface: rgba(255, 255, 255, 0.035);
+$surface-hover: rgba(255, 255, 255, 0.07);
+$surface-vibrant: rgba(139, 92, 246, 0.05);
+
+$primary: #8b5cf6; // Violet 500
+$primary-light: #a78bfa; // Violet 400
 $primary-glow: rgba(139, 92, 246, 0.5);
-$accent: #d946ef;
-$text-main: #f8fafc;
-$text-muted: #94a3b8;
-$glass-border: rgba(255, 255, 255, 0.1);
-$transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+$accent: #d946ef; // Fuchsia 500
+$accent-glow: rgba(217, 70, 239, 0.4);
+
+$gradient-primary: linear-gradient(135deg, $primary 0%, $accent 100%);
+$gradient-dark: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+
+$text-main: #fafafa; // Zinc 50
+$white: #ffffff;
+$text-secondary: #e4e4e7; // Zinc 200
+$text-muted: #71717a; // Zinc 500
+
+$glass-border: rgba(255, 255, 255, 0.08);
+$glass-border-bright: rgba(255, 255, 255, 0.15);
+
+$transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-fast: all 0.2s ease;
+
+$shadow-sm: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+$shadow-glow: 0 0 20px $primary-glow;

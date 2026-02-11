@@ -36,11 +36,51 @@
                             @enderror
                         </div>
 
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Address Line
+                                1</label>
+                            <input type="text" name="address_1" value="{{ old('address_1') }}"
+                                placeholder="Street address, P.O. box, company name" required>
+                            @error('address_1')
+                                <span style="color: #ef4444; font-size: 0.9rem;">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Address Line 2
+                                (Optional)</label>
+                            <input type="text" name="address_2" value="{{ old('address_2') }}"
+                                placeholder="Apartment, suite, unit, building, floor, etc.">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">City</label>
+                                <input type="text" name="city" value="{{ old('city') }}" required>
+                                @error('city')
+                                    <span style="color: #ef4444; font-size: 0.9rem;">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Postcode</label>
+                                <input type="text" name="postcode" value="{{ old('postcode') }}" required>
+                                @error('postcode')
+                                    <span style="color: #ef4444; font-size: 0.9rem;">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div style="margin-bottom: 2rem;">
-                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Shipping
-                                Address</label>
-                            <textarea name="shipping_address" rows="4" required>{{ old('shipping_address') }}</textarea>
-                            @error('shipping_address')
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">State</label>
+                            <select name="state" required
+                                style="width: 100%; background: var(--bg-accent); border: 1px solid var(--glass-border); color: white; padding: 0.8rem 1.2rem; border-radius: 12px;">
+                                <option value="">Select State</option>
+                                @foreach(['Johor', 'Kedah', 'Kelantan', 'Melaka', 'Negeri Sembilan', 'Pahang', 'Perak', 'Perlis', 'Pulau Pinang', 'Sabah', 'Sarawak', 'Selangor', 'Terengganu', 'Kuala Lumpur', 'Labuan', 'Putrajaya'] as $state)
+                                    <option value="{{ $state }}" {{ old('state') == $state ? 'selected' : '' }}>{{ $state }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('state')
                                 <span style="color: #ef4444; font-size: 0.9rem;">{{ $message }}</span>
                             @enderror
                         </div>

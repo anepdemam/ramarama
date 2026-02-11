@@ -1,21 +1,55 @@
 // Buttons
 .btn-primary {
-    background: linear-gradient(135deg, $primary, $accent);
+    background: $gradient-primary;
     color: white;
-    padding: 0.8rem 2rem;
-    border-radius: 50px;
-    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 100px;
+    font-weight: 700;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     cursor: pointer;
     transition: $transition;
-    box-shadow: 0 10px 20px -5px $primary-glow;
+    box-shadow: $shadow-glow;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
 
     &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 30px -5px $primary-glow;
-        filter: brightness(1.1);
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 20px 40px rgba($primary, 0.4);
+        filter: brightness(1.2);
+    }
+
+    &:active {
+        transform: translateY(-2px);
+    }
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid $glass-border-bright;
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 100px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: $transition;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+
+    &:hover {
+        background: $surface;
+        border-color: $white;
+        transform: translateY(-5px);
+        box-shadow: $shadow-sm;
     }
 }
 
@@ -25,10 +59,12 @@
     border: 1px solid $glass-border;
     color: white;
     padding: 0.8rem 2rem;
-    border-radius: 50px;
+    border-radius: 100px;
     font-weight: 600;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     transition: $transition;
 

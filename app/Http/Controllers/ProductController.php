@@ -69,8 +69,16 @@ class ProductController extends Controller
     {
         $query = $request->get('query');
         $suggestions = Product::where('name', 'like', "%{$query}%")
-            ->limit(5)
-            ->pluck('name');
+            ->limit(6)
+            ->get(['id', 'name', 'price', 'images', 'slug'])
+            ->map(function ($product) {
+                return [
+                    'name' => $product->name,
+                    'price' => number_format($product->price, 2),
+                    'image' => !empty($product->images) ? asset($product->images[0]) : null,
+                    'url' => route('products.show', $product->slug ?? $product->id),
+                ];
+            });
 
         return response()->json($suggestions);
     }

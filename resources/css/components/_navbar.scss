@@ -6,24 +6,30 @@
     width: 100%;
     z-index: 1000;
     padding: 1.5rem 0;
-    background: rgba(5, 5, 5, 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba($bg-primary, 0.7);
+    backdrop-filter: blur(20px);
     border-bottom: 1px solid $glass-border;
     transition: $transition;
 
     &.scrolled {
         padding: 1rem 0;
-        background: rgba(5, 5, 5, 0.95);
+        background: rgba($bg-primary, 0.9);
+        border-bottom-color: $glass-border-bright;
+        box-shadow: $shadow-sm;
     }
 }
 
 .nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
+    width: 100%; // Full width
+    margin: 0;
+    padding: 0 3rem; // Increased side padding for "corner" effect
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media (max-width: 768px) {
+        padding: 0 1.5rem;
+    }
 }
 
 .logo {
