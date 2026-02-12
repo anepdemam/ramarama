@@ -10,7 +10,9 @@
                 <div>
                     @if($product->images && count($product->images) > 0)
                         <div class="glass main-image-container">
-                            <img id="mainImage" src="{{ asset($product->images[0]) }}" alt="{{ $product->name }}">
+                            <img id="mainImage"
+                                src="{{ str_starts_with($product->images[0], 'data:') ? $product->images[0] : asset($product->images[0]) }}"
+                                alt="{{ $product->name }}">
 
                             <!-- Image zoom indicator -->
                             <div class="image-zoom-hint">
@@ -20,8 +22,9 @@
                         @if(count($product->images) > 1)
                             <div class="thumbnail-container">
                                 @foreach($product->images as $index => $image)
-                                    <img src="{{ asset($image) }}" alt="{{ $product->name }}"
-                                        onclick="document.getElementById('mainImage').src='{{ asset($image) }}'; document.querySelectorAll('.thumbnail-img').forEach(img => img.classList.remove('active')); this.classList.add('active');"
+                                    <img src="{{ str_starts_with($image, 'data:') ? $image : asset($image) }}"
+                                        alt="{{ $product->name }}"
+                                        onclick="document.getElementById('mainImage').src='{{ str_starts_with($image, 'data:') ? $image : asset($image) }}'; document.querySelectorAll('.thumbnail-img').forEach(img => img.classList.remove('active')); this.classList.add('active');"
                                         class="thumbnail-img {{ $index === 0 ? 'active' : '' }}">
                                 @endforeach
                             </div>

@@ -47,8 +47,8 @@ class ProductController extends Controller
         $imagePaths = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('products', 'public');
-                $imagePaths[] = 'storage/' . $path;
+                $imageData = base64_encode(file_get_contents($image->getRealPath()));
+                $imagePaths[] = 'data:' . $image->getMimeType() . ';base64,' . $imageData;
             }
         }
 
@@ -84,10 +84,21 @@ class ProductController extends Controller
         ]);
 
         $imagePaths = $product->images ?? [];
+
+        // Handle image removal
+        if ($request->has('remove_images')) {
+            foreach ($request->remove_images as $index) {
+                if (isset($imagePaths[$index])) {
+                    unset($imagePaths[$index]);
+                }
+            }
+            $imagePaths = array_values($imagePaths); // Re-index array
+        }
+
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('products', 'public');
-                $imagePaths[] = 'storage/' . $path;
+                $imageData = base64_encode(file_get_contents($image->getRealPath()));
+                $imagePaths[] = 'data:' . $image->getMimeType() . ';base64,' . $imageData;
             }
         }
 
@@ -101,11 +112,6 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if ($product->images) {
-            foreach ($product->images as $image) {
-                Storage::disk('public')->delete(str_replace('storage/', '', $image));
-            }
-        }
         $product->delete();
 
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully!');

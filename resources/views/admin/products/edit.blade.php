@@ -57,14 +57,37 @@
                                     Images</label>
                                 <div class="current-images"
                                     style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
-                                    @foreach($product->images as $image)
-                                        <div
-                                            style="position: relative; width: 60px; height: 60px; border-radius: 8px; overflow: hidden; border: 1px solid var(--glass-border);">
-                                            <img src="{{ asset($image) }}"
+                                    @foreach($product->images as $index => $image)
+                                        <div class="image-remove-item"
+                                            style="position: relative; width: 80px; height: 80px; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); transition: var(--transition);">
+                                            <img src="{{ str_starts_with($image, 'data:') ? $image : asset($image) }}"
                                                 style="width: 100%; height: 100%; object-fit: cover;">
+                                            <input type="checkbox" name="remove_images[]" value="{{ $index }}"
+                                                id="remove_image_{{ $index }}" class="remove-checkbox"
+                                                style="display: none;">
+                                            <label for="remove_image_{{ $index }}"
+                                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(239, 68, 68, 0); color: white; cursor: pointer; transition: var(--transition); opacity: 0;">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </label>
                                         </div>
                                     @endforeach
                                 </div>
+
+                                <style>
+                                    .image-remove-item:hover label {
+                                        background: rgba(239, 68, 68, 0.4) !important;
+                                        opacity: 1 !important;
+                                    }
+
+                                    .remove-checkbox:checked+label {
+                                        background: rgba(239, 68, 68, 0.8) !important;
+                                        opacity: 1 !important;
+                                    }
+
+                                    .remove-checkbox:checked~img {
+                                        filter: grayscale(1) blur(2px);
+                                    }
+                                </style>
                                 <label for="images"
                                     style="display: block; margin-bottom: 0.8rem; color: var(--text-muted);">Add More
                                     Images</label>

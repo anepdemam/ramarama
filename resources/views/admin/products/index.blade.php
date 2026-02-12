@@ -37,8 +37,11 @@
                                 <td style="padding-left: 2rem;">
                                     <div
                                         style="width: 60px; height: 60px; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border);">
-                                        <img src="{{ asset($product->images[0] ?? 'images/global/placeholder.jpg') }}"
-                                            alt="{{ $product->name }}"
+                                        @php
+                                            $imageUrl = $product->images[0] ?? 'images/global/placeholder.jpg';
+                                            $imageSrc = str_starts_with($imageUrl, 'data:') ? $imageUrl : asset($imageUrl);
+                                        @endphp
+                                        <img src="{{ $imageSrc }}" alt="{{ $product->name }}"
                                             style="width: 100%; height: 100%; object-fit: cover;">
                                     </div>
                                 </td>
